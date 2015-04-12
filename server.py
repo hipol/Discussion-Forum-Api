@@ -15,5 +15,5 @@ def before_request():
     if 'user_id' in session:
     	g.user = User.query.get([session['user_id']])
 
-
-app.run(debug=True)
+if __name__ == '__main__':
+	app.run()
