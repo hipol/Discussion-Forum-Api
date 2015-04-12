@@ -16,6 +16,8 @@ app.config.from_object('config')
 
 # Define the database object which is imported
 # by modules and controllers
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 db = SQLAlchemy(app)
 
 # Import a module / component using its blueprint handler variable (mod_auth)
