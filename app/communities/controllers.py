@@ -19,8 +19,9 @@ auth = HTTPBasicAuth()
 # Set the route and accepted methods
 @communities.route('/', methods=['GET'])
 def home():
-    communitieslist = Community.query.all()
-    return jsonify({"communities" : [community.serialize() for community in communitieslist]})
+    #communitieslist = Community.query.all()
+    #return jsonify({"communities" : [community.serialize() for community in communitieslist]})
+    return "hello"
 
 @communities.route('/community', methods=['GET'])
 def get_communities():
