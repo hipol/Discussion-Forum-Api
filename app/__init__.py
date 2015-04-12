@@ -1,4 +1,5 @@
 # Import flask and template operators
+import os
 from flask import Flask, render_template
 from flask_httpauth import HTTPBasicAuth
 
