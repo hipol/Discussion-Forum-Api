@@ -4,7 +4,7 @@ DEBUG = True
 # Define the database - we are working with
 # SQLite for this example
 #SQLALCHEMY_DATABASE_URI = 'postgresql://townsquaren36:townsquaren36.cpsi9ozyfzbi.us-east-1.rds.amazonaws.com:5432/townsquaren36'
-SQLALCHEMY_DATABASE_URI = DATABASE_URL
+SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 #SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/test'
 DATABASE_CONNECT_OPTIONS = {}
