@@ -2,6 +2,7 @@ from app import db
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
+
 admin_community_association = db.Table('admin_community_association', db.Model.metadata,
      db.Column('admin_id', db.Integer, db.ForeignKey('users.id')),
      db.Column('community_id', db.Integer, db.ForeignKey('communities.id'))
@@ -217,4 +218,3 @@ class CommentVoteUserJoin(db.Model):
 
 	def __repr__(self):
 		return '<Comment: %s, User: %s>' %(comment_id, voter_id)
-

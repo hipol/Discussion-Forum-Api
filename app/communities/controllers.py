@@ -6,14 +6,11 @@ from app.user_auth.models import User
 from werkzeug import check_password_hash
 from app.communities.models import Community, Issue, ActionPlan
 from flask import Flask, jsonify
-
-#                    from flask.ext.httpauth import HTTPBasicAuth
+from flask.ext.httpauth import HTTPBasicAuth
 
 
 communities = Blueprint('communbp', __name__)
-
-
- #                   auth = HTTPBasicAuth()
+auth = HTTPBasicAuth()
 
 
 
