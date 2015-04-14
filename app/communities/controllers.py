@@ -9,6 +9,7 @@ from flask import Flask, jsonify
 from flask.ext.httpauth import HTTPBasicAuth
 
 
+
 communities = Blueprint('communbp', __name__)
 auth = HTTPBasicAuth()
 
@@ -126,3 +127,6 @@ def get_action_plan_for_issue(issue_id):
 def get_all_action_plans():
     action_plans = ActionPlan.query.all()
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
+
+
+

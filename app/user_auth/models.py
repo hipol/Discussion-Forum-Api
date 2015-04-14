@@ -1,7 +1,8 @@
 from app import db
 from sqlalchemy.orm import relationship, backref
-from app.communities.models import Issue, Comment, \
-  CommentVoteUserJoin, Community, ActionPlanVoteUserJoin, admin_community_association
+#find out more about circular dependencies
+#from app.communities.models import Issue, Comment, \
+#  CommentVoteUserJoin, Community, ActionPlanVoteUserJoin
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
@@ -15,11 +16,6 @@ class User(db.Model):
   first_name = db.Column(db.String)
   last_name = db.Column(db.String)
   postal_code = db.Column(db.String)
-
-  admin_of_community = db.relationship("Community",
-                            secondary=admin_community_association,
-                            backref=db.backref('users'),
-    )
 
   issue_id = db.relationship('Issue', backref='users', lazy='dynamic')
   comment_id = db.relationship('Comment', backref='users', lazy='dynamic')

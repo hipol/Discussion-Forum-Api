@@ -1,6 +1,7 @@
 from app import db
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
+from app.user_auth.models import User
 
 
 admin_community_association = db.Table('admin_community_association', db.Model.metadata,
@@ -218,3 +219,5 @@ class CommentVoteUserJoin(db.Model):
 
 	def __repr__(self):
 		return '<Comment: %s, User: %s>' %(comment_id, voter_id)
+
+from app.user_auth.models import User
