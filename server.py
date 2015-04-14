@@ -9,11 +9,5 @@ from app import db
 from app.user_auth.models import User
 #from app.communities.models import Community
 
-@app.before_request
-def before_request():
-    g.user = None
-    if 'user_id' in session:
-    	g.user = User.query.get([session['user_id']])
-
 if __name__ == '__main__':
 	app.run()
