@@ -13,9 +13,6 @@ communities = Blueprint('communbp', __name__)
 auth = HTTPBasicAuth()
 
 
-
-
-
 # Set the route and accepted methods
 @communities.route('/', methods=['GET'])
 def home():
