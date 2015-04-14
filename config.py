@@ -1,9 +1,11 @@
+
 # Statement for enabling the development environment
 DEBUG = True
 
 # Define the database - we are working with
 # SQLite for this example
-SQLALCHEMY_DATABASE_URI = 'postgresql://townsquaren36:townsquaren36password@townsquaren36.cpsi9ozyfzbi.us-east-1.rds.amazonaws.com:5432/townsquaren36'
+#SQLALCHEMY_DATABASE_URI = 'postgresql://townsquaren36:townsquaren36password@townsquaren36.cpsi9ozyfzbi.us-east-1.rds.amazonaws.com:5432/townsquaren36'
+SQLALCHEMY_DATABASE_URI = 'postgres://kxkgdmzsgjrjhx:gIf0bdo5L_gofhRNumCAKU79n0@ec2-54-163-239-102.compute-1.amazonaws.com:5432/dc63quiip25omn'
 #SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 #SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/test'
