@@ -69,12 +69,11 @@ class Issue(db.Model):
 			}
 
 	#def __init__(self, title, info, community_id, author_id, picture):
-	def __init__(self, title, info, community_id, author_id):
+	def __init__(self, title, info, author_id):
 		self.views = 0
 		self.importance_count = 0
 		self.title = title
 		self.info = info
-		self.community_id = community_id
 		self.author_id = author_id
 		#self.picture = picture
 
