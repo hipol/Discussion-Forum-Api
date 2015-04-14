@@ -28,18 +28,16 @@ user_auth = Blueprint('authbp', __name__, url_prefix='/auth')
 # Set the route and accepted methods
 @user_auth.route('/signup', methods=['POST'])
 def signup():
-    email = request.json.get('email')
+    email = request.get_json('email')
     password = request.json.get('password')
     first_name = request.json.get('first_name')
     last_name = request.json.get('last_name')
-    city = request.json.get('city')
-    state = request.json.get('state')
-    country = request.json.get('country')
+    postal_code = request.json.get('postal_code')
     if email is None or password is None:
         abort(400) # missing arguments
     if User.query.filter_by(email = email).first() is not None:
         abort(400) # existing user
-    user = User(first_name, last_name, email, city, state, country)
+    user = User(first_name, last_name, email, postal_code)
     user.hash_password(password)
     db.session.add(user)
     db.session.commit()

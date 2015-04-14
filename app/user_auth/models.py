@@ -14,9 +14,7 @@ class User(db.Model):
   password_hash = db.Column(db.String)
   first_name = db.Column(db.String)
   last_name = db.Column(db.String)
-  city = db.Column(db.String)
-  state = db.Column(db.String)
-  country = db.Column(db.String)
+  postal_code = db.Column(db.String)
 
   admin_of_community = db.relationship("Community",
                             secondary=admin_community_association,
@@ -40,18 +38,14 @@ class User(db.Model):
       'first_name' : self.first_name,
       'last_name' : self.last_name,
       'email' : self.email,
-      'city' : self.city,
-      'state' : self.state,
-      'country' : self.country,
+      'postal_code' : self.postal_code,
     }
 
-  def __init__(self, first_name, last_name, email, city, state, country):
+  def __init__(self, first_name, last_name, email, postal_code):
     self.first_name = first_name
     self.last_name = last_name
     self.email = email
-    self.city = city
-    self.state = state
-    self.country = country
+    self.postal_code = postal_code
 
   def __repr__(self):
     return '<User %r>' % self.email
