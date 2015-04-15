@@ -2,12 +2,14 @@
 import os
 from flask import Flask, render_template
 from flask_httpauth import HTTPBasicAuth
+from flask.ext.cors import CORS
 
 # Import SQLAlchemy
 from flask.ext.sqlalchemy import SQLAlchemy
 
 # Define the WSGI application object
 app = Flask(__name__)
+cors = CORS(app)
 
 auth = HTTPBasicAuth()
 
@@ -37,5 +39,7 @@ from app.communities.models import Community, Issue, ActionPlan
 # Build the database:
 # This will create the database file using SQLAlchemy
 #db.create_all()
+
+
 
 

@@ -8,7 +8,7 @@ from app.communities.models import Community, Issue, ActionPlan
 from flask import Flask, jsonify
 from flask.ext.httpauth import HTTPBasicAuth
 
-
+######
 
 communities = Blueprint('communbp', __name__)
 auth = HTTPBasicAuth()
