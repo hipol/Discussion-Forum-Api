@@ -90,10 +90,10 @@ def get_specific_issues(issue_id):
 @communities.route('/issue/<int:issue_id>/plan/create', methods=['POST'])
 #@auth.login_required
 def create_action_plan(issue_id):
-    #form request
     plan = request.json.get('plan')
     article = request.json.get('article')
-    author_id = g.user.id
+ #   author_id = g.user.id
+    author_id = 1
 
     action_plan = ActionPlan(plan, article, author_id, issue_id)
     db.session.add(action_plan)
@@ -110,8 +110,6 @@ def create_action_plan(issue_id):
    #db.session.commit()
   #  response = {'status':200}
   #  return jsonify(**response)  
-
-
 
 @communities.route('/actionplan/delete/<int:action_plan_id>', methods=['POST'])
 def delete_action_plan(action_plan_id):
