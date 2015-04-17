@@ -40,7 +40,7 @@ class Issue(db.Model):
 	views = db.Column(db.Integer)
 	importance_count = db.Column(db.Integer)
 	title = db.Column(db.String)
-	#picture = db.Column(db.String)
+	picture = db.Column(db.String)
 	#how to store photos?!? - - - - - - - - - - - - - - - - - - - - - - - --- - - - - - - - -
 	info = db.Column(db.String)
 
@@ -57,7 +57,7 @@ class Issue(db.Model):
 			'importance_count': self.importance_count,
 			'title': self.title,
 			'info': self.info,
-			#'picture' : self.picture,
+			'picture' : self.picture,
 			'community_id': self.community_id,
 			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
 
@@ -70,14 +70,14 @@ class Issue(db.Model):
 
 			}
 
-	#def __init__(self, title, info, community_id, author_id, picture):
-	def __init__(self, title, info, author_id):
+	def __init__(self, title, info, author_id, picture):
+	#def __init__(self, title, info, author_id):
 		self.views = 0
 		self.importance_count = 0
 		self.title = title
 		self.info = info
 		self.author_id = author_id
-		#self.picture = picture
+		self.picture = picture
 
 	def __repr__(self):
 		return '<Issue: %r, # %s>' %(self.title, self.id)
