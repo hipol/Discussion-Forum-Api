@@ -95,6 +95,9 @@ def create_action_plan(issue_id):
  #   author_id = g.user.id
     author_id = 1
 
+    if plan is None or article is None:
+        abort(400) # missing arguments
+
     action_plan = ActionPlan(plan, article, author_id, issue_id)
     db.session.add(action_plan)
     db.session.commit()
