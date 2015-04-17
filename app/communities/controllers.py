@@ -91,11 +91,11 @@ def get_specific_issues(issue_id):
 @auth.login_required
 def create_action_plan(issue_id):
     #form request
-    plan = request.form.get('plan', None)
-    info = request.form.get('info', None)
+    plan = request.json.get('plan')
+    article = request.json.get('article')
     author_id = g.user.id
 
-    action_plan = ActionPlan(plan, author_id, issue_id)
+    action_plan = ActionPlan(plan, article, author_id, issue_id)
     db.session.add(action_plan)
     db.session.commit()
     response = {'status':200}
