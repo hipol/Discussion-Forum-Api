@@ -24,7 +24,7 @@ def verify_password(email_or_token, password):
             return False
     g.user = user
     return True
-    
+
 # Set the route and accepted methods
 @communities.route('/', methods=['GET'])
 def home():
@@ -44,7 +44,6 @@ def get_issue_for_community(community_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue', methods=['GET'])
-@auth.login_required
 def get_all_issues():
     issuelist = Issue.query.all()
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
@@ -62,9 +61,6 @@ def create_issue(community_id):
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
-
-    
- 
 
 #@communities.route('<int:community_id>/issue/update/<int:issue_id>', methods=['PUT, GET'])
 #def update(community_id, issue_id):
@@ -85,7 +81,6 @@ def delete_issue(issue_id):
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
-
 
 @communities.route('/issue/<int:issue_id>', methods=['GET'])
 def get_specific_issues(issue_id):
