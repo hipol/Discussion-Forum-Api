@@ -13,7 +13,18 @@ from flask.ext.httpauth import HTTPBasicAuth
 communities = Blueprint('communbp', __name__)
 auth = HTTPBasicAuth()
 
-
+@auth.verify_password
+def verify_password(email_or_token, password):
+    # first try to authenticate by token
+    user = User.verify_auth_token(email_or_token)
+    if not user:
+        # try to authenticate with email/password
+        user = User.query.filter_by(email = email_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
+    
 # Set the route and accepted methods
 @communities.route('/', methods=['GET'])
 def home():
@@ -33,6 +44,7 @@ def get_issue_for_community(community_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue', methods=['GET'])
+@auth.login_required
 def get_all_issues():
     issuelist = Issue.query.all()
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
@@ -81,6 +93,7 @@ def get_specific_issues(issue_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue/<int:issue_id>/plan/create', methods=['POST'])
+@auth.login_required
 def create_action_plan(issue_id):
     #form request
     plan = request.form.get('plan', None)

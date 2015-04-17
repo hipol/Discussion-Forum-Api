@@ -1,10 +1,11 @@
 from app import db
+from app import app
 from sqlalchemy.orm import relationship, backref
 #find out more about circular dependencies
 #from app.communities.models import Issue, Comment, \
 #  CommentVoteUserJoin, Community, ActionPlanVoteUserJoin
 from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
   
 class User(db.Model):
@@ -46,7 +47,7 @@ class User(db.Model):
   def __repr__(self):
     return '<User %r>' % self.email
 
-  def generate_auth_token(self, expiration=600):
+  def generate_auth_token(self, expiration=1800):
     s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
     return s.dumps({'id': self.id})
 
