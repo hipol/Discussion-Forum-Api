@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 from app.user_auth.models import User
 from werkzeug import check_password_hash
-from app.communities.models import Community, Issue, ActionPlan
+from app.communities.models import Community, Issue, ActionPlan, Comment
 from flask import Flask, jsonify
 from flask.ext.httpauth import HTTPBasicAuth
 
@@ -127,15 +127,28 @@ def get_specific_action_plan(action_plan_id):
     action_plan = ActionPlan.query.filter_by(id=action_plan_id)
     return jsonify({"action_plans" : [plan.serialize() for plan in action_plan]})
 
-@communities.route('/<int:issue_id>/actionplan', methods=['GET'])
-def get_action_plan_for_issue(issue_id):
-    action_plan_list = Issue.query.filter_by(id=issue_id)
-    return jsonify({"action_plans" : [plan.serialize() for plan in action_plan_list]})
-
 @communities.route('/actionplan', methods=['GET'])
 def get_all_action_plans():
     action_plans = ActionPlan.query.all()
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
+@communities.route('/<int:action_plan_id>/comment/create', methods=['POST'])
+#@auth.login_required
+def create_comment(action_plan_id):
+    text = request.json.get('comment')
+ #   author_id = g.user.id
+    author_id = 1
 
+    if text is None:
+        abort(400) # missing arguments
 
+    commenttt = Comment(text, action_plan_id, author_id)
+    db.session.add(commenttt)
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
+@communities.route('/actionplan/<int:action_plan_id>/comments', methods=['GET'])
+def get_comments(action_plan_id):
+    comment = Comment.query.filter_by(action_plan_id=action_plan_id)
+    return jsonify({"comments" : [comment_ind.serialize() for comment_ind in comment]})

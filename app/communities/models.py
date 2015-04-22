@@ -191,13 +191,22 @@ class Comment(db.Model):
 
 	comment_vote_user_joins_id = db.relationship("CommentVoteUserJoin", backref='comments', lazy='dynamic')
 
-	def __init__(self, text, issue_id, article_id, user_id):
+	def serialize(self):
+		return {
+			'id': self.id,
+			'text': self.text,
+			'upvotes': self.upvotes,
+			'downvotes': self.downvotes,
+			'author_id': self.author_id,
+			'action_plan_id': self.action_plan_id,
+		}
+
+	def __init__(self, text, action_plan_id, author_id):
 		self.text = text
 		self.upvotes = 0
 		self.downvotes = 0
-		self.user_id = user_id
-		self.issue_id = issue_id
-		self.article_id = article_id
+		self.author_id = author_id
+		self.action_plan_id = action_plan_id
 
 	def __repr__(self):
 		return '<Comment: %s>' % id
