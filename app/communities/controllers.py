@@ -139,9 +139,6 @@ def create_comment(action_plan_id):
  #   author_id = g.user.id
     author_id = 1
 
-    if text is None:
-        abort(400) # missing arguments
-
     commenttt = Comment(text, action_plan_id, author_id)
     db.session.add(commenttt)
     db.session.commit()
