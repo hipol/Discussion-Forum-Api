@@ -44,6 +44,7 @@ def get_issue_for_community(community_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue', methods=['GET'])
+@auth.login_required
 def get_all_issues():
     issuelist = Issue.query.all()
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
