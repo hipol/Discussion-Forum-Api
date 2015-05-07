@@ -11,4 +11,4 @@ from app.user_auth.models import User
 
 if __name__ == '__main__':
 	app.run()
-	manager.run()
+

@@ -40,14 +40,6 @@ from app.communities.models import Community, Issue, ActionPlan
 # This will create the database file using SQLAlchemy
 #db.create_all()
 
-#Flask-Migrate configuration
-from flask.ext.migrate import Migrate, MigrateCommand
-from flask.ext.script import Manager
-
-migrate = Migrate(app, db)
-
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
 
 
 
