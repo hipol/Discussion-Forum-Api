@@ -1,5 +1,5 @@
 # Run a test server.
-from app import app, manager
+from app import app
 
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for
