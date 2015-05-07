@@ -84,7 +84,7 @@ def userList():
     userlist = User.query.all()
     return jsonify({"users" : [user.serialize() for user in userlist]})
 
-@user_auth.route('/users/<int:id>')
+@user_auth.route('/user/<int:id>')
 def get_user(id):
     user = User.query.get(id)
     if not user:
