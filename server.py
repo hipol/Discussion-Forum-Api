@@ -1,5 +1,5 @@
 # Run a test server.
-from app import app
+from app import app, manager
 
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for
@@ -11,3 +11,4 @@ from app.user_auth.models import User
 
 if __name__ == '__main__':
 	app.run()
+	manager.run()
