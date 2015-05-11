@@ -179,4 +179,3 @@ class CommentVoteUserJoin(db.Model):
 	def __repr__(self):
 		return '<Comment: %s, User: %s>' %(comment_id, voter_id)
 
-from app.user_auth.models import User

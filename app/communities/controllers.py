@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 from app.user_auth.models import User
 from werkzeug import check_password_hash
-from app.communities.models import Community, Issue, ActionPlan, Comment
+from app.communities.models import Community, Issue, ActionPlan, ActionPlanVoteUserJoin, Comment
 from flask import Flask, jsonify
 from flask.ext.httpauth import HTTPBasicAuth
 
@@ -134,6 +134,7 @@ def get_all_action_plans():
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
+@cross_origin()
 def vote_action_plan(action_plan_id):
     author_id = request.json.get('userid')
 
@@ -142,6 +143,11 @@ def vote_action_plan(action_plan_id):
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
+
+@communities.route('/vote', methods=['GET'])
+def get_all_votes():
+    votes = ActionPlanVoteUserJoin.query.all()
+    return jsonify({"votes" : [vote.serialize() for vote in votes]})
 
 
 @communities.route('/<int:action_plan_id>/comment/create', methods=['POST'])

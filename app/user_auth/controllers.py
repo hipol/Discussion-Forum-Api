@@ -57,28 +57,6 @@ def signup():
     db.session.commit()
     return jsonify({ 'email': user.email }), 201
 
-#@user_auth.route('/login', methods=['POST'])
-#def login():
-#    """Logs the user in."""
-#    response = {'status':403}
-
-#    if g.user:
-#        response = {'status':300}
-        
-#    error = None
-#    if request.method == 'POST':
-
-
-#    return jsonify(**response)
-
-#@user_auth.route('/logout')
-#def logout():
-#    """Logs the user out."""
-#    flash('You were logged out')
-#    session.pop('user_id', None)
-#    response = {'status':200}
-#    return jsonify(**response)
-
 @user_auth.route("/users", methods=['GET'])
 def userList():
     userlist = User.query.all()
