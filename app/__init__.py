@@ -9,7 +9,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 # Define the WSGI application object
 app = Flask(__name__)
-cors = CORS(app)
+
 
 auth = HTTPBasicAuth()
 
