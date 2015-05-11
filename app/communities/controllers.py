@@ -129,11 +129,13 @@ def get_specific_action_plan(action_plan_id):
     return jsonify({"action_plans" : [plan.serialize() for plan in action_plan]})
 
 @communities.route('/actionplan', methods=['GET'])
+@cross_origin()
 def get_all_action_plans():
     action_plans = ActionPlan.query.all()
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
+@cross_origin()
 def vote_action_plan(action_plan_id):
     voter_id = request.json.get('userid')
 
@@ -144,6 +146,7 @@ def vote_action_plan(action_plan_id):
     return jsonify(**response)
 
 @communities.route('/<int:action_plan_id>/delete_vote', methods=['POST'])
+@cross_origin()
 def delete_vote(action_plan_id):
     voter_id = request.json.get('userid')
 
