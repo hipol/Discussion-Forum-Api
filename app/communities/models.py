@@ -122,9 +122,16 @@ class ActionPlanVoteUserJoin(db.Model):
 	action_plan_id = db.Column(db.Integer, db.ForeignKey('actionplans.id'))
 	voter_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-	def __init__(self, action_plan_id, user_id):
+	def serialize(self):
+		return {
+			'id': self.id,
+			'voter_id': self.voter_id,
+			'action_plan_id': self.action_plan_id
+		}
+
+	def __init__(self, action_plan_id, voter_id):
 		self.action_plan_id = action_plan_id
-		self.user_id = user_id
+		self.voter_id = voter_id
 
 	def __repr__(self):
 		return '<ActionPlan: %s, User: %s>' %(action_plan_id, voter_id)
