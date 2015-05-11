@@ -89,6 +89,7 @@ def get_specific_issues(issue_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue/<int:issue_id>/plan/create', methods=['POST'])
+@cross_origin()
 #@auth.login_required
 def create_action_plan(issue_id):
     plan = request.json.get('plan')
