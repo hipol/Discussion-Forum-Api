@@ -14,7 +14,6 @@ communities = Blueprint('communbp', __name__)
 auth = HTTPBasicAuth()
 
 @auth.verify_password
-@cross_origin()
 def verify_password(email_or_token, password):
     # first try to authenticate by token
     user = User.verify_auth_token(email_or_token)
@@ -28,34 +27,29 @@ def verify_password(email_or_token, password):
 
 # Set the route and accepted methods
 @communities.route('/', methods=['GET'])
-@cross_origin()
 def home():
     #communitieslist = Community.query.all()
     #return jsonify({"communities" : [community.serialize() for community in communitieslist]})
     return "hello"
 
 @communities.route('/community', methods=['GET'])
-@cross_origin()
 def get_communities():
     communitieslist = Community.query.all()
     return jsonify({"community" : [community.serialize() for community in communitieslist]})
 
 #
 @communities.route('/<int:community_id>/issue', methods=['GET'])
-@cross_origin()
 def get_issue_for_community(community_id):
     issuelist = Issue.query.filter_by(community_id=community_id)
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue', methods=['GET'])
-@cross_origin()
 @auth.login_required
 def get_all_issues():
     issuelist = Issue.query.all()
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/<int:community_id>/issue/create', methods=['POST'])
-@cross_origin()
 def create_issue(community_id):
     if not request.json or 'title' not in request.json:
         abort(400)
@@ -82,7 +76,6 @@ def create_issue(community_id):
 
 
 @communities.route('/<int:community_id>/issue/delete/<int:issue_id>', methods=['POST'])
-@cross_origin()
 def delete_issue(issue_id):
     issue = Issue.query.filter_by(id=issue_id)
     db.session.delete(issue)
@@ -91,13 +84,11 @@ def delete_issue(issue_id):
     return jsonify(**response)
 
 @communities.route('/issue/<int:issue_id>', methods=['GET'])
-@cross_origin()
 def get_specific_issues(issue_id):
     issuelist = Issue.query.filter_by(id=issue_id)
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue/<int:issue_id>/plan/create', methods=['POST'])
-@cross_origin()
 #@auth.login_required
 def create_action_plan(issue_id):
     plan = request.json.get('plan')
@@ -125,7 +116,6 @@ def create_action_plan(issue_id):
   #  return jsonify(**response)  
 
 @communities.route('/actionplan/delete/<int:action_plan_id>', methods=['POST'])
-@cross_origin()
 def delete_action_plan(action_plan_id):
     action_plan = ActionPlan.query.filter_by(id=action_plan_id)
     db.session.delete(action_plan)
@@ -134,19 +124,16 @@ def delete_action_plan(action_plan_id):
     return jsonify(**response)
 
 @communities.route('/actionplan/<int:action_plan_id>', methods=['GET'])
-@cross_origin()
 def get_specific_action_plan(action_plan_id):
     action_plan = ActionPlan.query.filter_by(id=action_plan_id)
     return jsonify({"action_plans" : [plan.serialize() for plan in action_plan]})
 
 @communities.route('/actionplan', methods=['GET'])
-@cross_origin()
 def get_all_action_plans():
     action_plans = ActionPlan.query.all()
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
-@cross_origin()
 def vote_action_plan(action_plan_id):
     voter_id = request.json.get('userid')
 
@@ -157,7 +144,6 @@ def vote_action_plan(action_plan_id):
     return jsonify(**response)
 
 @communities.route('/<int:action_plan_id>/delete_vote', methods=['POST'])
-@cross_origin()
 def delete_vote(action_plan_id):
     voter_id = request.json.get('userid')
 
@@ -168,14 +154,12 @@ def delete_vote(action_plan_id):
     return jsonify(**response)
 
 @communities.route('/vote', methods=['GET'])
-@cross_origin()
 def get_all_votes():
     votes = ActionPlanVoteUserJoin.query.all()
     return jsonify({"votes" : [vote.serialize() for vote in votes]})
 
 
 @communities.route('/<int:action_plan_id>/comment/create', methods=['POST'])
-@cross_origin()
 #@auth.login_required
 def create_comment(action_plan_id):
     text = request.json.get('comment')
@@ -188,7 +172,6 @@ def create_comment(action_plan_id):
     return jsonify(**response)
 
 @communities.route('/actionplan/<int:action_plan_id>/comments', methods=['GET'])
-@cross_origin()
 def get_comments(action_plan_id):
     comment = Comment.query.filter_by(action_plan_id=action_plan_id)
     return jsonify({"comments" : [comment_ind.serialize() for comment_ind in comment]})

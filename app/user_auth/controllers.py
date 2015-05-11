@@ -24,7 +24,6 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
 auth = HTTPBasicAuth()
 
 @auth.verify_password
-@cross_origin()
 def verify_password(email_or_token, password):
     # first try to authenticate by token
     user = User.verify_auth_token(email_or_token)
@@ -41,7 +40,6 @@ user_auth = Blueprint('authbp', __name__, url_prefix='/auth')
 
 # Set the route and accepted methods
 @user_auth.route('/signup', methods=['POST'])
-@cross_origin()
 def signup():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -60,13 +58,11 @@ def signup():
     return jsonify({ 'email': user.email }), 201
 
 @user_auth.route("/users", methods=['GET'])
-@cross_origin()
 def userList():
     userlist = User.query.all()
     return jsonify({"users" : [user.serialize() for user in userlist]})
 
 @user_auth.route('/user/<int:id>')
-@cross_origin()
 def get_user(id):
     user = User.query.get(id)
     if not user:
@@ -74,7 +70,6 @@ def get_user(id):
     return jsonify(user.serialize())
 
 @user_auth.route('/token')
-@cross_origin()
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
