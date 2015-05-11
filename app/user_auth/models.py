@@ -36,6 +36,7 @@ class User(db.Model):
       'last_name' : self.last_name,
       'email' : self.email,
       'postal_code' : self.postal_code,
+      #'comments' : Comment.query.get(selt.comment_id).text
     }
 
   def __init__(self, first_name, last_name, email, postal_code):

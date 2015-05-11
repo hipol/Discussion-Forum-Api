@@ -133,52 +133,6 @@ class ActionPlanVoteUserJoin(db.Model):
 	def __repr__(self):
 		return '<ActionPlan: %s, User: %s>' %(action_plan_id, voter_id)
 
-class Pros(db.Model):
-	__tablename__ = "pros"
-	id = db.Column(db.Integer, primary_key=True)
-	upvotes = db.Column(db.Integer)
-	downvotes = db.Column(db.Integer)
-	text = db.Column(db.String)
-
-	action_plan_id = db.Column(db.Integer, db.ForeignKey('actionplans.id'))
-	author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-#	comment_vote_user_joins_id = db.relationship("Pros", backref='comments', lazy='dynamic')
-
-	def __init__(self, text, issue_id, article_id, user_id):
-		self.text = text
-		self.upvotes = 0
-		self.downvotes = 0
-		self.user_id = user_id
-		self.issue_id = issue_id
-		self.article_id = article_id
-
-	def __repr__(self):
-		return '<Pros: %s>' % id
-
-class Cons(db.Model):
-	__tablename__ = "cons"
-	id = db.Column(db.Integer, primary_key=True)
-	upvotes = db.Column(db.Integer)
-	downvotes = db.Column(db.Integer)
-	text = db.Column(db.String)
-
-	action_plan_id = db.Column(db.Integer, db.ForeignKey('actionplans.id'))
-	author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-#	comment_vote_user_joins_id = db.relationship("Pros", backref='comments', lazy='dynamic')
-
-	def __init__(self, text, issue_id, article_id, user_id):
-		self.text = text
-		self.upvotes = 0
-		self.downvotes = 0
-		self.user_id = user_id
-		self.issue_id = issue_id
-		self.article_id = article_id
-
-	def __repr__(self):
-		return '<Pros: %s>' % id
-
 class Comment(db.Model):
 	__tablename__ = "comments"
 	id = db.Column(db.Integer, primary_key=True)
@@ -197,7 +151,7 @@ class Comment(db.Model):
 			'text': self.text,
 			'upvotes': self.upvotes,
 			'downvotes': self.downvotes,
-			'author_id': self.author_id,
+			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
 			'action_plan_id': self.action_plan_id,
 		}
 
