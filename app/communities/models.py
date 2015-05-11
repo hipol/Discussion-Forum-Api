@@ -94,8 +94,6 @@ class ActionPlan(db.Model):
 
 	action_plan_vote_user_joins_id = db.relationship("ActionPlanVoteUserJoin", backref='actionplans', lazy='dynamic')
 	comment_id = db.relationship("Comment", backref='articles', lazy='dynamic')
-	pros = db.relationship("Pros", backref='articles', lazy='dynamic')
-	cons = db.relationship("Cons", backref='articles', lazy='dynamic')
 
 	def serialize(self):
 		return {
@@ -103,8 +101,6 @@ class ActionPlan(db.Model):
 			'votes': self.votes,
 			'plan': self.plan,
 			'article': self.article,
-			'pros': [x for x in self.pros],
-			'cons': [x for x in self.cons],
 			'author_id': self.author_id,
 			'issue_id': self.issue_id
 		}
