@@ -133,18 +133,12 @@ def get_all_action_plans():
     action_plans = ActionPlan.query.all()
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
-@communities.route('/<int:action_plan_id>/comment/create', methods=['POST'])
-def create_comment(action_plan_id):
-
-
-
-
-    
-    text = request.json.get('comment')
+@communities.route('/<int:action_plan_id>/vote', methods=['POST'])
+def vote_action_plan(action_plan_id):
     author_id = request.json.get('userid')
 
-    commenttt = Comment(text, action_plan_id, author_id)
-    db.session.add(commenttt)
+    vote = ActionPlanVoteUserJoin(action_plan_id, author_id)
+    db.session.add(vote)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
