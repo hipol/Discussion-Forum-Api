@@ -134,14 +134,10 @@ def get_all_action_plans():
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
-def vote_ap(action_plan_id):
+def vote_action_plan(action_plan_id):
     voter_id = request.json.get('userid')
-    vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
-    add_vote(vote)
-    response = {'status':200}
-    return jsonify(**response)
 
-def add_vote(vote):
+    vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
     db.session.add(vote)
     db.session.commit()
     response = {'status':200}
@@ -150,7 +146,11 @@ def add_vote(vote):
 @communities.route('/<int:action_plan_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
 def delete_vote(action_plan_id, voter_id):
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
-    db.session.delete(vote)
+    delete(vote)
+
+
+def delete(thing):
+    db.session.delete(thing)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
