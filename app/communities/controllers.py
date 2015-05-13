@@ -137,8 +137,14 @@ def get_all_action_plans():
 def vote_ap(action_plan_id):
     voter_id = request.json.get('userid')
 
-    vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
-    db.session.add(vote)
+ #   vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
+ #   db.session.add(vote)
+ #   db.session.commit()
+ #   response = {'status':200}
+ #   return jsonify(**response)
+
+    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id)
+    db.session.delete(vote)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
