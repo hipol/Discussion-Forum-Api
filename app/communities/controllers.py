@@ -134,7 +134,7 @@ def get_all_action_plans():
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
-def vote_action_plan(action_plan_id):
+def vote_ap(action_plan_id):
     voter_id = request.json.get('userid')
 
     vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
