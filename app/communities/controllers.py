@@ -136,14 +136,13 @@ def get_all_action_plans():
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
 def vote_ap(action_plan_id):
     voter_id = request.json.get('userid')
+    vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
+    add_vote(vote)
+    response = {'status':200}
+    return jsonify(**response)
 
- #   vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
- #   db.session.add(vote)
- #   db.session.commit()
- #   response = {'status':200}
- #   return jsonify(**response)
-
-    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id)
+def add_vote(vote):
+    db.session.add(vote)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
