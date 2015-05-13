@@ -144,7 +144,6 @@ def vote_ap(action_plan_id):
  #   return jsonify(**response)
 
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id)
-    db.session.delete(vote)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
