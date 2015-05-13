@@ -145,8 +145,9 @@ def vote_action_plan(action_plan_id):
 
 @communities.route('/<int:action_plan_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
 def delete_vote(action_plan_id, voter_id):
-    vote = ActionPlanVoteUserJoin.query.filter_by(id=26)
-    db.session.delete(vote)
+    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = 10, voter_id = voter_id)
+    for v in vote:
+        db.session.delete(v)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
