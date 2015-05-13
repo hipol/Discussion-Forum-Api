@@ -60,7 +60,9 @@ def create_issue(community_id):
     issue = Issue(title, info, community_id, author_id)
     db.session.add(issue)
     db.session.commit()
-    
+    response = {'status':200}
+    return jsonify(**response)
+
 #@communities.route('<int:community_id>/issue/update/<int:issue_id>', methods=['PUT, GET'])
 #def update(community_id, issue_id):
 #    json_dict = request.get_json()
@@ -78,6 +80,8 @@ def delete_issue(issue_id):
     issue = Issue.query.filter_by(id=issue_id)
     db.session.delete(issue)
     db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
 
 @communities.route('/issue/<int:issue_id>', methods=['GET'])
 def get_specific_issues(issue_id):
@@ -98,6 +102,8 @@ def create_action_plan(issue_id):
     action_plan = ActionPlan(plan, article, author_id, issue_id)
     db.session.add(action_plan)
     db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
 
 # @communities.route('<int:community_id>/issue/update/<int:issue_id>', methods=['PUT'])
  #def update(action_plan_id):
@@ -114,6 +120,8 @@ def delete_action_plan(action_plan_id):
     action_plan = ActionPlan.query.filter_by(id=action_plan_id)
     db.session.delete(action_plan)
     db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
 
 @communities.route('/actionplan/<int:action_plan_id>', methods=['GET'])
 def get_specific_action_plan(action_plan_id):
@@ -128,9 +136,12 @@ def get_all_action_plans():
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
 def vote_action_plan(action_plan_id):
     voter_id = request.json.get('userid')
+
     vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
     db.session.add(vote)
     db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
 
 @communities.route('/<int:action_plan_id>/check_vote/<int:voter_id>', methods=['GET'])
 def check_vote(action_plan_id, voter_id):
@@ -145,6 +156,8 @@ def delete_vote(action_plan_id, voter_id):
     for v in vote:
         db.session.delete(v)
     db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
 
 @communities.route('/vote', methods=['GET'])
 def get_all_votes():
@@ -161,6 +174,8 @@ def create_comment(action_plan_id):
     commenttt = Comment(text, action_plan_id, author_id)
     db.session.add(commenttt)
     db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
 
 @communities.route('/actionplan/<int:action_plan_id>/comments', methods=['GET'])
 def get_comments(action_plan_id):
