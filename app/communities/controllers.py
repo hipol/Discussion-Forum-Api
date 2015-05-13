@@ -138,7 +138,7 @@ def vote_action_plan(action_plan_id):
     voter_id = request.json.get('userid')
     vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
     db.session.add(vote)
-    ap = ActionPlan.query.filter_by(id = action_plan_id)
+    ap = ActionPlan.query.filter_by(id = action_plan_id).first
     ap.votes += 1
     db.session.commit()
     response = {'status':200}
@@ -156,7 +156,7 @@ def delete_vote(action_plan_id, voter_id):
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
     for v in vote:
         db.session.delete(v)
-    ap = ActionPlan.query.filter_by(id = action_plan_id)
+    ap = ActionPlan.query.filter_by(id = action_plan_id).first
     ap.votes -= 1
     db.session.commit()
     response = {'status':200}
