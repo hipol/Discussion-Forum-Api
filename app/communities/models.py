@@ -64,7 +64,8 @@ class Issue(db.Model):
 			'community_id': self.community_id,
 			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
 			'pub_date' : self.pub_date,
-			'action_plan_id': [x.serialize() for x in self.action_plan_id] 
+			'action_plan_id': [x.serialize() for x in self.action_plan_id],
+			'time_since': timesince(self.pub_date)
 			#figure out the x.plan
 
 
@@ -110,7 +111,8 @@ class ActionPlan(db.Model):
 			'article': self.article,
 			'author_id': self.author_id,
 			'issue_id': self.issue_id,
-			'pub_date' : self.pub_date
+			'pub_date' : self.pub_date,
+			'time_since': timesince(self.pub_date)
 		}
 
 	def __init__(self, plan, article, author_id, issue_id):
@@ -140,7 +142,8 @@ class ActionPlanVoteUserJoin(db.Model):
 			'id': self.id,
 			'voter_id': self.voter_id,
 			'action_plan_id': self.action_plan_id,
-			'pub_date': self.pub_date
+			'pub_date': self.pub_date,
+			'time_since': timesince(self.pub_date)
 		}
 
 	def __init__(self, action_plan_id, voter_id):
@@ -174,7 +177,8 @@ class Comment(db.Model):
 			'downvotes': self.downvotes,
 			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
 			'action_plan_id': self.action_plan_id,
-			'pub_date': self.pub_date
+			'pub_date': self.pub_date,
+			'time_since': timesince(self.pub_date)
 		}
 
 	def __init__(self, text, action_plan_id, author_id):
@@ -202,11 +206,22 @@ class CommentVoteUserJoin(db.Model):
 
 	event_id = relationship("Event", backref="commentvoteuserjoins", lazy='dynamic')
 
-	def __init__(self, comment_id, user_id, main_value):
+	def __init__(self, comment_id, voter_id, main_value):
 		self.comment_id = comment_id
-		self.user_id = user_id
+		self.voter_id = voter_id
 		self.main_value = main_value
 		self.pub_date = datetime.utcnow()
+
+	def serialize(self):
+		return {
+			'id': self.id,
+			'voter_id': self.voter_id,
+			'comment_id': self.action_plan_id,
+			'main_value': self.main_value,
+			'pub_date': self.pub_date,
+			'time_since': timesince(self.pub_date)
+		}
+
 		
 
 	def __repr__(self):
@@ -235,6 +250,33 @@ class Event(db.Model):
 	def __repr__(self):
 		return '<Comment: %s, User: %s>' %(comment_id, voter_id)
 
+
+from datetime import datetime
+def timesince(dt, default="just now"):
+    """
+    Returns string representing "time since" e.g.
+    3 days ago, 5 hours ago etc.
+    """
+
+    now = datetime.utcnow()
+    diff = now - dt
+    
+    periods = (
+        (diff.days / 365, "year", "years"),
+        (diff.days / 30, "month", "months"),
+        (diff.days / 7, "week", "weeks"),
+        (diff.days, "day", "days"),
+        (diff.seconds / 3600, "hour", "hours"),
+        (diff.seconds / 60, "minute", "minutes"),
+        (diff.seconds, "second", "seconds"),
+    )
+
+    for period, singular, plural in periods:
+        
+        if period:
+            return "%d %s ago" % (period, singular if period == 1 else plural)
+
+    return default
 
 
 
