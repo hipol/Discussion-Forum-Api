@@ -186,7 +186,7 @@ def create_comment(action_plan_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/vote', methods=['POST'])
 @auth.login_required
-def vote_action_plan(action_plan_id):
+def vote_comment(action_plan_id, comment_id):
     voter_id = request.json.get('userid')
     vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
     db.session.add(vote)
@@ -198,7 +198,7 @@ def vote_action_plan(action_plan_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/check_vote/<int:voter_id>', methods=['GET'])
 @auth.login_required
-def check_vote(action_plan_id, voter_id):
+def check_vote_comment(action_plan_id, comment_id, voter_id):
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
     if not vote:
         return 'False'
@@ -206,7 +206,7 @@ def check_vote(action_plan_id, voter_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
 @auth.login_required
-def delete_vote(action_plan_id, voter_id):
+def delete_vote_comment(action_plan_id, comment_id, voter_id):
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
     db.session.delete(v)
     ap = ActionPlan.query.filter_by(id = action_plan_id).first()
