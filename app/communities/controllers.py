@@ -188,3 +188,10 @@ def create_comment(action_plan_id):
 def get_comments(action_plan_id):
     comment = Comment.query.filter_by(action_plan_id=action_plan_id)
     return jsonify({"comments" : [comment_ind.serialize() for comment_ind in comment]})
+
+@communities.route('/events', methods=['GET'])
+def get_events():
+    eventlist = Event.query.all()
+    return jsonify({"issue" : [issue.serialize() for issue in reversed(issuelist)]})
+
+
