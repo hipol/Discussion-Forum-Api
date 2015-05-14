@@ -241,10 +241,9 @@ class Event(db.Model):
 
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-	def __init__(self, comment_id, user_id, main_value):
-		self.comment_id = comment_id
+	def __init__(self, event_type, user_id):
 		self.user_id = user_id
-		self.main_value = main_value
+		self.event_type = event_type
 		self.pub_date = datetime.utcnow()
 
 	def __repr__(self):

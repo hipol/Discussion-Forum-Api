@@ -59,6 +59,11 @@ def create_issue(community_id):
 
     issue = Issue(title, info, community_id, author_id)
     db.session.add(issue)
+
+    event = Event(1, g.user_id)
+    event.issue_id = issue.id
+    db.session.add(event)
+
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
@@ -102,6 +107,11 @@ def create_action_plan(issue_id):
 
     action_plan = ActionPlan(plan, article, author_id, issue_id)
     db.session.add(action_plan)
+
+    event = Event(2, g.user_id)
+    event.action_plan_id = action_plan.id
+    db.session.add(event)
+
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
@@ -143,6 +153,11 @@ def vote_action_plan(action_plan_id):
     db.session.add(vote)
     ap = ActionPlan.query.filter_by(id = action_plan_id).first()
     ap.votes += 1
+
+    event = Event(4, g.user_id)
+    event.actionplanvoteuserjoins_id  = vote.id 
+    db.session.add(event)
+
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
@@ -150,7 +165,7 @@ def vote_action_plan(action_plan_id):
 @communities.route('/<int:action_plan_id>/check_vote/<int:voter_id>', methods=['GET'])
 @auth.login_required
 def check_vote(action_plan_id, voter_id):
-    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
+    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
     if not vote:
         return 'False'
     return 'True'
@@ -159,7 +174,7 @@ def check_vote(action_plan_id, voter_id):
 @auth.login_required
 def delete_vote(action_plan_id, voter_id):
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
-    db.session.delete(v)
+    db.session.delete(vote)
     ap = ActionPlan.query.filter_by(id = action_plan_id).first()
     ap.votes -= 1
     db.session.commit()
@@ -178,39 +193,77 @@ def create_comment(action_plan_id):
     text = request.json.get('comment')
     author_id = request.json.get('userid')
 
-    commenttt = Comment(text, action_plan_id, author_id)
-    db.session.add(commenttt)
+    comment = Comment(text, action_plan_id, author_id)
+    db.session.add(comment)
+
+    event = Event(3, g.user_id)
+    event.comment_id = comment.id 
+    db.session.add(event)
+
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
 
-@communities.route('/<int:action_plan_id>/<int:comment_id>/vote', methods=['POST'])
+@communities.route('/<int:action_plan_id>/<int:comment_id>/upvote', methods=['POST'])
 @auth.login_required
-def vote_comment(action_plan_id, comment_id):
+def upvote_comment(comment_id):
     voter_id = request.json.get('userid')
-    vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
+    vote = CommentVoteUserJoin(comment_id, voter_id, 1)
     db.session.add(vote)
-    ap = ActionPlan.query.filter_by(id = action_plan_id).first()
-    ap.votes += 1
+    comment = Comment.query.filter_by(id = comment_id).first()
+    comment.upvotes += 1
+
+    event = Event(5, g.user_id)
+    event.commentvoteuserjoins_id = vote.id 
+    db.session.add(event)
+
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/check_vote/<int:voter_id>', methods=['GET'])
 @auth.login_required
-def check_vote_comment(action_plan_id, comment_id, voter_id):
-    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
+def check_vote_comment(comment_id, voter_id):
+    vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
     if not vote:
-        return 'False'
-    return 'True'
+        return '0'
+    return vote.main_value
 
-@communities.route('/<int:action_plan_id>/<int:comment_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
+@communities.route('/<int:action_plan_id>/<int:comment_id>/delete_upvote_by/<int:voter_id>', methods=['POST'])
 @auth.login_required
-def delete_vote_comment(action_plan_id, comment_id, voter_id):
-    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
-    db.session.delete(v)
-    ap = ActionPlan.query.filter_by(id = action_plan_id).first()
-    ap.votes -= 1
+def delete_upvote_comment(comment_id, voter_id):
+    vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
+    db.session.delete(vote)
+    comment = Comment.query.filter_by(id = comment_id).first()
+    comment.upvotes -= 1
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
+@communities.route('/<int:action_plan_id>/<int:comment_id>/downvote', methods=['POST'])
+@auth.login_required
+def downvote_comment(comment_id):
+    voter_id = request.json.get('userid')
+    vote = CommentVoteUserJoin(comment_id, voter_id, 1)
+    db.session.add(vote)
+    comment = Comment.query.filter_by(id = comment_id).first()
+    comment.downvotes += 1
+
+    event = Event(5, g.user_id)
+    event.commentvoteuserjoins_id = vote.id 
+    db.session.add(event)
+
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
+@communities.route('/<int:action_plan_id>/<int:comment_id>/delete_downvote_by/<int:voter_id>', methods=['POST'])
+@auth.login_required
+def delete_downvote_comment(comment_id, voter_id):
+    vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
+    db.session.delete(vote)
+    comment = Comment.query.filter_by(id = comment_id).first()
+    comment.downvotes -= 1
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
@@ -223,6 +276,6 @@ def get_comments(action_plan_id):
 @communities.route('/events', methods=['GET'])
 def get_events():
     eventlist = Event.query.all()
-    return jsonify({"issue" : [issue.serialize() for issue in reversed(issuelist)]})
+    return jsonify({"issue" : [event.serialize() for event in reversed(eventlist)]})
 
 
