@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 from app.user_auth.models import User
 from werkzeug import check_password_hash
-from app.communities.models import Community, Issue, ActionPlan, ActionPlanVoteUserJoin, Comment
+from app.communities.models import Community, Issue, ActionPlan, ActionPlanVoteUserJoin, Comment, Event
 from flask import Flask, jsonify
 from flask.ext.httpauth import HTTPBasicAuth
 
@@ -180,6 +180,37 @@ def create_comment(action_plan_id):
 
     commenttt = Comment(text, action_plan_id, author_id)
     db.session.add(commenttt)
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
+@communities.route('/<int:action_plan_id>/<int:comment_id>/vote', methods=['POST'])
+@auth.login_required
+def vote_action_plan(action_plan_id):
+    voter_id = request.json.get('userid')
+    vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
+    db.session.add(vote)
+    ap = ActionPlan.query.filter_by(id = action_plan_id).first()
+    ap.votes += 1
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
+@communities.route('/<int:action_plan_id>/<int:comment_id>/check_vote/<int:voter_id>', methods=['GET'])
+@auth.login_required
+def check_vote(action_plan_id, voter_id):
+    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
+    if not vote:
+        return 'False'
+    return 'True'
+
+@communities.route('/<int:action_plan_id>/<int:comment_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
+@auth.login_required
+def delete_vote(action_plan_id, voter_id):
+    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
+    db.session.delete(v)
+    ap = ActionPlan.query.filter_by(id = action_plan_id).first()
+    ap.votes -= 1
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
