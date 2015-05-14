@@ -196,7 +196,7 @@ def create_comment(action_plan_id):
     comment = Comment(text, action_plan_id, author_id)
     db.session.add(comment)
 
-    event = Event(3, g.user_id)
+    event = Event(3, g.user.id)
     event.comment_id = comment.id 
     db.session.add(event)
 
