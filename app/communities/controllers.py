@@ -44,12 +44,12 @@ def get_issue_for_community(community_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue', methods=['GET'])
-@auth.login_required
 def get_all_issues():
     issuelist = Issue.query.all()
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/<int:community_id>/issue/create', methods=['POST'])
+@auth.login_required
 def create_issue(community_id):
     if not request.json or 'title' not in request.json:
         abort(400)
@@ -76,6 +76,7 @@ def create_issue(community_id):
 
 
 @communities.route('/<int:community_id>/issue/delete/<int:issue_id>', methods=['POST'])
+@auth.login_required
 def delete_issue(issue_id):
     issue = Issue.query.filter_by(id=issue_id)
     db.session.delete(issue)
@@ -89,7 +90,7 @@ def get_specific_issues(issue_id):
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
 @communities.route('/issue/<int:issue_id>/plan/create', methods=['POST'])
-#@auth.login_required
+@auth.login_required
 def create_action_plan(issue_id):
     plan = request.json.get('plan')
     article = request.json.get('article')
@@ -116,8 +117,9 @@ def create_action_plan(issue_id):
   #  return jsonify(**response)  
 
 @communities.route('/actionplan/delete/<int:action_plan_id>', methods=['POST'])
+@auth.login_required
 def delete_action_plan(action_plan_id):
-    action_plan = ActionPlan.query.filter_by(id=action_plan_id)
+    action_plan = ActionPlan.query.filter_by(id=action_plan_id).first()
     db.session.delete(action_plan)
     db.session.commit()
     response = {'status':200}
@@ -134,6 +136,7 @@ def get_all_action_plans():
     return jsonify({"action_plans" : [action_plan.serialize() for action_plan in action_plans]})
 
 @communities.route('/<int:action_plan_id>/vote', methods=['POST'])
+@auth.login_required
 def vote_action_plan(action_plan_id):
     voter_id = request.json.get('userid')
     vote = ActionPlanVoteUserJoin(action_plan_id, voter_id)
@@ -145,6 +148,7 @@ def vote_action_plan(action_plan_id):
     return jsonify(**response)
 
 @communities.route('/<int:action_plan_id>/check_vote/<int:voter_id>', methods=['GET'])
+@auth.login_required
 def check_vote(action_plan_id, voter_id):
     vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
     if not vote:
@@ -152,10 +156,10 @@ def check_vote(action_plan_id, voter_id):
     return 'True'
 
 @communities.route('/<int:action_plan_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
+@auth.login_required
 def delete_vote(action_plan_id, voter_id):
-    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id)
-    for v in vote:
-        db.session.delete(v)
+    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
+    db.session.delete(v)
     ap = ActionPlan.query.filter_by(id = action_plan_id).first()
     ap.votes -= 1
     db.session.commit()
@@ -169,7 +173,7 @@ def get_all_votes():
 
 
 @communities.route('/<int:action_plan_id>/comment/create', methods=['POST'])
-#@auth.login_required
+@auth.login_required
 def create_comment(action_plan_id):
     text = request.json.get('comment')
     author_id = request.json.get('userid')
