@@ -246,6 +246,14 @@ class Event(db.Model):
 		self.event_type = event_type
 		self.pub_date = datetime.utcnow()
 
+	def serialize(self):
+		return {
+			'id': self.id,
+			'event_type': self.event_type,
+			'pub_date': self.pub_date,
+			'time_since': timesince(self.pub_date)
+		}
+
 	def __repr__(self):
 		return '<Comment: %s, User: %s>' %(comment_id, voter_id)
 
