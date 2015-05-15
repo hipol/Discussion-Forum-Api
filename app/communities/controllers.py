@@ -231,7 +231,11 @@ def check_vote_comment(action_plan_id, comment_id, voter_id):
     vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
     if not vote:
         return '0'
-    return vote.main_value
+    if vote.main_value = 1:
+        return '1'
+    if vote.main_value = -1:
+        return '-1'
+    return 'false'
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/delete_upvote_by/<int:voter_id>', methods=['POST'])
 @auth.login_required
