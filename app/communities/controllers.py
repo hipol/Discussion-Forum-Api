@@ -231,9 +231,9 @@ def check_vote_comment(action_plan_id, comment_id, voter_id):
     vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
     if not vote:
         return '0'
-    if vote.main_value = 1:
+    if vote.main_value == 1:
         return '1'
-    if vote.main_value = -1:
+    if vote.main_value == -1:
         return '-1'
     return 'false'
 
