@@ -186,6 +186,10 @@ def get_all_votes():
     votes = ActionPlanVoteUserJoin.query.all()
     return jsonify({"votes" : [vote.serialize() for vote in votes]})
 
+@communities.route('/commentvote', methods=['GET'])
+def get_all_commentvotes():
+    votes = CommentVoteUserJoin.query.all()
+    return jsonify({"votes" : [vote.serialize() for vote in votes]})
 
 @communities.route('/<int:action_plan_id>/comment/create', methods=['POST'])
 @auth.login_required
