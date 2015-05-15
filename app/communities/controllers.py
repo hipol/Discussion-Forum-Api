@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 from app.user_auth.models import User
 from werkzeug import check_password_hash
-from app.communities.models import Community, Issue, ActionPlan, ActionPlanVoteUserJoin, Comment, Event
+from app.communities.models import Community, Issue, ActionPlan, ActionPlanVoteUserJoin, Comment, Event, CommentVoteUserJoin
 from flask import Flask, jsonify
 from flask.ext.httpauth import HTTPBasicAuth
 
