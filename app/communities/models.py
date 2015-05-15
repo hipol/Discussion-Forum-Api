@@ -216,7 +216,7 @@ class CommentVoteUserJoin(db.Model):
 		return {
 			'id': self.id,
 			'voter_id': self.voter_id,
-			'comment_id': self.action_plan_id,
+			'comment_id': self.comment_id,
 			'main_value': self.main_value,
 			'pub_date': self.pub_date,
 			'time_since': timesince(self.pub_date)
