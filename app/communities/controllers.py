@@ -206,7 +206,7 @@ def create_comment(action_plan_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/upvote', methods=['POST'])
 @auth.login_required
-def upvote_comment(comment_id):
+def upvote_comment(action_plan_id, comment_id):
     voter_id = request.json.get('userid')
     vote = CommentVoteUserJoin(comment_id, voter_id, 1)
     db.session.add(vote)
@@ -223,7 +223,7 @@ def upvote_comment(comment_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/check_vote/<int:voter_id>', methods=['GET'])
 @auth.login_required
-def check_vote_comment(comment_id, voter_id):
+def check_vote_comment(action_plan_id, comment_id, voter_id):
     vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
     if not vote:
         return '0'
@@ -231,7 +231,7 @@ def check_vote_comment(comment_id, voter_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/delete_upvote_by/<int:voter_id>', methods=['POST'])
 @auth.login_required
-def delete_upvote_comment(comment_id, voter_id):
+def delete_upvote_comment(action_plan_id, comment_id, voter_id):
     vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
     db.session.delete(vote)
     comment = Comment.query.filter_by(id = comment_id).first()
@@ -242,7 +242,7 @@ def delete_upvote_comment(comment_id, voter_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/downvote', methods=['POST'])
 @auth.login_required
-def downvote_comment(comment_id):
+def downvote_comment(action_plan_id, comment_id):
     voter_id = request.json.get('userid')
     vote = CommentVoteUserJoin(comment_id, voter_id, 1)
     db.session.add(vote)
@@ -259,7 +259,7 @@ def downvote_comment(comment_id):
 
 @communities.route('/<int:action_plan_id>/<int:comment_id>/delete_downvote_by/<int:voter_id>', methods=['POST'])
 @auth.login_required
-def delete_downvote_comment(comment_id, voter_id):
+def delete_downvote_comment(action_plan_id, comment_id, voter_id):
     vote = CommentVoteUserJoin.query.filter_by(comment_id = comment_id, voter_id = voter_id).first()
     db.session.delete(vote)
     comment = Comment.query.filter_by(id = comment_id).first()
