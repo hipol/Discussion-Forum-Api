@@ -109,7 +109,7 @@ class ActionPlan(db.Model):
 			'votes': self.votes,
 			'plan': self.plan,
 			'article': self.article,
-			'author_id': self.author_id,
+			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
 			'issue_id': self.issue_id,
 			'pub_date' : self.pub_date,
 			'time_since': timesince(self.pub_date)
