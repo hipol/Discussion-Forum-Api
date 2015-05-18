@@ -252,7 +252,8 @@ def delete_upvote_comment(action_plan_id, comment_id, voter_id):
 @auth.login_required
 def downvote_comment(action_plan_id, comment_id):
     voter_id = request.json.get('userid')
-    vote = CommentVoteUserJoin(comment_id, voter_id, 1)
+    vote = CommentVoteUserJoin(comment_id, voter_id, -1)
+
     db.session.add(vote)
     comment = Comment.query.filter_by(id = comment_id).first()
     comment.downvotes += 1
