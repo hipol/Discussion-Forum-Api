@@ -99,8 +99,8 @@ def get_specific_issues(issue_id):
 def create_action_plan(issue_id):
     plan = request.json.get('plan')
     article = request.json.get('article')
- #   author_id = g.user.id
-    author_id = 1
+    author_id = g.user.id
+
 
     if plan is None or article is None:
         abort(400) # missing arguments
