@@ -112,7 +112,8 @@ class ActionPlan(db.Model):
 			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
 			'issue_id': self.issue_id,
 			'pub_date' : self.pub_date,
-			'time_since': timesince(self.pub_date)
+			'time_since': timesince(self.pub_date),
+    		'comments' : [x.serialize() for x in self.comment_id]
 		}
 
 	def __init__(self, plan, article, author_id, issue_id):
