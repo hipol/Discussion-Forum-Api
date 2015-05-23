@@ -62,7 +62,8 @@ class Issue(db.Model):
 			'info': self.info,
 			'picture' : self.picture,
 			'community_id': self.community_id,
-			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
+			'author': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
+			'author_id': self.author_id,
 			'pub_date' : self.pub_date,
 			'action_plan_id': [x.serialize() for x in self.action_plan_id],
 			'time_since': timesince(self.pub_date)
