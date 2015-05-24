@@ -255,7 +255,12 @@ class Event(db.Model):
 			'id': self.id,
 			'event_type': self.event_type,
 			'pub_date': self.pub_date,
-			'time_since': timesince(self.pub_date)
+			'time_since': timesince(self.pub_date), 
+			'issue_id': self.issue_id,
+			'action_plan_id': self.action_plan_id,
+			'comment_id': self.comment_id,
+			'actionplanvoteuserjoins_id': self.actionplanvoteuserjoins_id,
+			'commentvoteuserjoins_id': self.commentvoteuserjoins_id,
 		}
 
 	def __repr__(self):
