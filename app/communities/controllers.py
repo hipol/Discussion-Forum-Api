@@ -211,7 +211,7 @@ def create_comment(action_plan_id):
 @communities.route('/comment/delete/<int:comment_id>', methods=['POST'])
 @auth.login_required
 def delete_comment(comment_id):
-    com = Comment.query.filter_by(id=action_plan_id).first()
+    com = Comment.query.filter_by(id=comment_id).first()
     db.session.delete(com)
     db.session.commit()
     response = {'status':200}
