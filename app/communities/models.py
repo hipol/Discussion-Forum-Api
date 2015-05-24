@@ -178,7 +178,8 @@ class Comment(db.Model):
 			'text': self.text,
 			'upvotes': self.upvotes,
 			'downvotes': self.downvotes,
-			'author_id': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
+			'author': User.query.get(self.author_id).first_name + " " + User.query.get(self.author_id).last_name,
+			'author_id': self.author_id,
 			'action_plan_id': self.action_plan_id,
 			'pub_date': self.pub_date,
 			'time_since': timesince(self.pub_date)
