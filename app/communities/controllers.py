@@ -208,6 +208,15 @@ def create_comment(action_plan_id):
     response = {'status':200}
     return jsonify(**response)
 
+@communities.route('/comment/delete/<int:comment_id>', methods=['POST'])
+@auth.login_required
+def delete_comment(comment_id):
+    com = Comment.query.filter_by(id=action_plan_id).first()
+    db.session.delete(com)
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
 @communities.route('/<int:action_plan_id>/<int:comment_id>/upvote', methods=['POST'])
 @auth.login_required
 def upvote_comment(action_plan_id, comment_id):
