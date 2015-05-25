@@ -56,7 +56,7 @@ def create_issue(community_id):
     author_id = g.user.id
     picture = request.json.get('picture')
 
-    if title is None or info is None or picture is None
+    if title is None or info is None or picture is None:
         abort(400) # missing arguments
 
     issue = Issue(title, info, author_id, picture)
