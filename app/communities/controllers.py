@@ -74,7 +74,7 @@ def get_specific_issues(issue_id):
     issuelist = Issue.query.filter_by(id=issue_id)
     return jsonify({"issue" : [issue.serialize() for issue in issuelist]})
 
-@communities.route('/issue/<int:issue_id>/pla/create', methods=['POST'])
+@communities.route('/issue/<int:issue_id>/plan/create', methods=['POST'])
 @auth.login_required
 def create_action_plans(issue_id):
     plan = request.json.get('plan')
@@ -276,7 +276,6 @@ def get_events():
     eventlist = Event.query.all()
     return jsonify({"issue" : [event.serialize() for event in reversed(eventlist)]})
 
-@communities.route('/<int:community_id>/issue/create', methods=['POST'])
-@auth.login_required
-def create_issue(community_id):
+@communities.route('/issue/create', methods=['POST'])
+def create_issue():
     return jsonify(**response)
