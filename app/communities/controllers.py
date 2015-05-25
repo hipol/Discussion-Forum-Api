@@ -105,7 +105,6 @@ def create_action_plan(issue_id):
     article = request.json.get('article')
     author_id = g.user.id
 
-
     if plan is None or article is None:
         abort(400) # missing arguments
 
