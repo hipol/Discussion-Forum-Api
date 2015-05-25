@@ -51,13 +51,16 @@ def get_all_issues():
 @communities.route('/<int:community_id>/issue/create', methods=['POST'])
 @auth.login_required
 def create_issue(community_id):
-    if not request.json or 'title' not in request.json:
-        abort(400)
-    title = request.json['title']
-    info = request.json.get('info', "")
+    title = request.json.get('title')
+    info = request.json.get('article')
     author_id = g.user.id
+    picture = request.json.get('picture')
 
-    issue = Issue(title, info, community_id, author_id)
+    if title is None or info is None or picture is None
+        abort(400) # missing arguments
+
+    issue = Issue(title, info, author_id, picture)
+    issue.community_id = community_id
     db.session.add(issue)
 
     event = Event(1, g.user.id)
