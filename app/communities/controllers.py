@@ -276,7 +276,7 @@ def get_events():
     eventlist = Event.query.all()
     return jsonify({"issue" : [event.serialize() for event in reversed(eventlist)]})
 
-@communities.route('/issue/create', methods=['POST'])
+@communities.route('/create/issue', methods=['POST'])
 def create_issue():
     response = {'status':200}
     return jsonify(**response)
