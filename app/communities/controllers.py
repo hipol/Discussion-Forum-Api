@@ -76,7 +76,7 @@ def get_specific_issues(issue_id):
 
 @communities.route('/issue/<int:issue_id>/pla/create', methods=['POST'])
 @auth.login_required
-def create_action_plan(issue_id):
+def create_action_plans(issue_id):
     plan = request.json.get('plan')
     article = request.json.get('article')
     author_id = g.user.id
