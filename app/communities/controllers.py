@@ -56,15 +56,16 @@ def create_issue(community_id):
     author_id = g.user.id
     picture = request.json.get('picture')
 
-    if title is None or info is None or picture is None:
+
+    if plan is None or article is None or picture is None:
         abort(400) # missing arguments
 
-    issue = Issue(title, info, author_id, picture)
-    issue.community_id = community_id
-    db.session.add(issue)
+    action_plan = Issue(title, info, author_id, picture)
+    action_plan.community_id = community_id
+    db.session.add(action_plan)
 
     event = Event(1, g.user.id)
-    event.issue_id = issue.id
+    event.action_plan_id = action_plan.id
     db.session.add(event)
 
     db.session.commit()
