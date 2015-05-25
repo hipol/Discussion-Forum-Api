@@ -278,4 +278,5 @@ def get_events():
 
 @communities.route('/issue/create', methods=['POST'])
 def create_issue():
+    response = {'status':200}
     return jsonify(**response)
