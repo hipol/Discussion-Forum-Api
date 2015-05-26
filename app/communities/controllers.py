@@ -87,7 +87,7 @@ def create_action_plans(issue_id):
     action_plan = ActionPlan(plan, article, author_id, issue_id)
     db.session.add(action_plan)
 
-    event = Event(2, g.user.id)
+    event = Event(2, author_id)
     event.action_plan_id = action_plan.id
     db.session.add(event)
 
@@ -133,7 +133,7 @@ def vote_action_plan(action_plan_id):
     ap = ActionPlan.query.filter_by(id = action_plan_id).first()
     ap.votes += 1
 
-    event = Event(4, g.user.id)
+    event = Event(4, author_id)
     event.actionplanvoteuserjoins_id  = vote.id 
     db.session.add(event)
 
@@ -179,7 +179,7 @@ def create_comment(action_plan_id):
     comment = Comment(text, action_plan_id, author_id)
     db.session.add(comment)
 
-    event = Event(3, g.user.id)
+    event = Event(3, author_id)
     event.comment_id = comment.id 
     db.session.add(event)
 
@@ -205,7 +205,7 @@ def upvote_comment(action_plan_id, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     comment.upvotes += 1
 
-    event = Event(5, g.user.id)
+    event = Event(5, author_id)
     event.commentvoteuserjoins_id = vote.id 
     db.session.add(event)
 
@@ -246,7 +246,7 @@ def downvote_comment(action_plan_id, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     comment.downvotes += 1
 
-    event = Event(5, g.user.id)
+    event = Event(5, author_id)
     event.commentvoteuserjoins_id = vote.id 
     db.session.add(event)
 
@@ -289,7 +289,7 @@ def create_issue():
 #    issue.community_id = community_id
     db.session.add(issue)
 
-    event = Event(1, g.user.id)
+    event = Event(1, author_id)
     event.issue_id = issue.id
     db.session.add(event)
 
