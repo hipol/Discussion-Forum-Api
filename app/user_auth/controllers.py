@@ -92,7 +92,7 @@ def get_user(id):
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({ 'token': token.decode('ascii'), 'id': g.user.id })
+    return jsonify({ 'token': token.decode('ascii'), 'id': g.user.id, 'is_admin': g.user.is_admin })
 
 
 
