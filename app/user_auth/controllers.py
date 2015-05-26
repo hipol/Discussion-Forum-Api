@@ -57,6 +57,25 @@ def signup():
     db.session.commit()
     return jsonify({ 'email': user.email }), 201
 
+@user_auth.route('/signup/admin', methods=['POST'])
+def signup_admin():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    first_name = request.json.get('first_name')
+    last_name = request.json.get('last_name')
+    postal_code = request.json.get('postal_code')
+    password = request.json.get('password')
+    if email is None or password is None:
+        abort(400) # missing arguments
+    if User.query.filter_by(email = email).first() is not None:
+        abort(400) # existing user
+    user = User(first_name, last_name, email, postal_code)
+    user.hash_password(password)
+    user.is_admin = True
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({ 'email': user.email }), 201
+
 @user_auth.route("/users", methods=['GET'])
 def userList():
     userlist = User.query.all()

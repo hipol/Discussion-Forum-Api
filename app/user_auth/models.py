@@ -35,7 +35,7 @@ class User(db.Model):
       'first_name' : self.first_name,
       'last_name' : self.last_name,
       'email' : self.email,
-      'postal_code' : self.postal_code,
+      'postal_code' : self.postal_code
       #'comments' : Comment.query.get(selt.comment_id).text
     }
 
