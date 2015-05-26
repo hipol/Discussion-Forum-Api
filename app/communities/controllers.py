@@ -275,13 +275,13 @@ def get_events():
     return jsonify({"issue" : [event.serialize() for event in reversed(eventlist)]})
 
 @communities.route('/<int:community_id>/create/issue', methods=['POST'])
-def create_issue():
+def create_issue(community_id):
     title = request.json.get('title')
     info = request.json.get('article')
     author_id = request.json.get('userid')
     picture = request.json.get('picture')
 
-    if title is None or info is None or picture is None:
+    if title is None or info is None or picture is None or author_id is None:
         abort(400) # missing arguments
 
     issue = Issue(title, info, author_id, picture)
