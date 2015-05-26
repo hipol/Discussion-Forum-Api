@@ -113,15 +113,6 @@ def create_action_plans(issue_id):
   #  response = {'status':200}
   #  return jsonify(**response)  
 
-@communities.route('/actionplan/delete/<int:action_plan_id>', methods=['POST'])
-@auth.login_required
-def delete_action_plan(action_plan_id):
-    action_plan = ActionPlan.query.filter_by(id=action_plan_id).first()
-    db.session.delete(action_plan)
-    db.session.commit()
-    response = {'status':200}
-    return jsonify(**response)
-
 @communities.route('/actionplan/<int:action_plan_id>', methods=['GET'])
 def get_specific_action_plan(action_plan_id):
     action_plan = ActionPlan.query.filter_by(id=action_plan_id)
