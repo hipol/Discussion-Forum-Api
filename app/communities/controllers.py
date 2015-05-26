@@ -63,7 +63,7 @@ def get_all_issues():
 @auth.login_required
 def delete_issue(issue_id):
     issue = Issue.query.filter_by(id=issue_id)
- #   db.session.delete(issue)
+    db.session.delete(issue)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
