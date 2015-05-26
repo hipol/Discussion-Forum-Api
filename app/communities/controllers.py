@@ -275,7 +275,7 @@ def get_events():
     return jsonify({"issue" : [event.serialize() for event in reversed(eventlist)]})
 
 @communities.route('/<int:community_id>/create/issue', methods=['POST'])
-def create_issue(community_id):
+def create_issue():
     title = request.json.get('title')
     info = request.json.get('article')
     author_id = request.json.get('userid')
