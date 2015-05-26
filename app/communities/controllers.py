@@ -60,7 +60,7 @@ def get_all_issues():
 #    return jsonify(**response)  
 
 
-@communities.route('/<int:community_id>/issue/delete/<int:issue_id>', methods=['POST'])
+@communities.route('/issue/delete/<int:issue_id>', methods=['POST'])
 @auth.login_required
 def delete_issue(issue_id):
     issue = Issue.query.filter_by(id=issue_id)
@@ -275,7 +275,7 @@ def get_events():
     eventlist = Event.query.all()
     return jsonify({"issue" : [event.serialize() for event in reversed(eventlist)]})
 
-@communities.route('/create/issue', methods=['POST'])
+@communities.route('/<int:community_id>/create/issue', methods=['POST'])
 def create_issue():
     title = request.json.get('title')
     info = request.json.get('article')
@@ -286,7 +286,7 @@ def create_issue():
         abort(400) # missing arguments
 
     issue = Issue(title, info, author_id, picture)
-#    issue.community_id = community_id
+    issue.community_id = community_id
     db.session.add(issue)
 
     event = Event(1, author_id)
