@@ -62,7 +62,7 @@ def get_all_issues():
 @communities.route('/issue/delete/<int:issue_id>', methods=['POST'])
 @auth.login_required
 def delete_issue(issue_id):
-    issue = Issue.query.filter_by(id=issue_id)
+    issue = Issue.query.filter_by(id=issue_id).first()
     db.session.delete(issue)
     db.session.commit()
     response = {'status':200}
