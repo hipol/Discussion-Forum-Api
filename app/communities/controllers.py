@@ -148,14 +148,6 @@ def check_vote(action_plan_id, voter_id):
         return 'False'
     return 'True'
 
-@communities.route('/<int:action_plan_id>/check_vote/<int:voter_id>', methods=['GET'])
-@auth.login_required
-def check_vote(action_plan_id, voter_id):
-    vote = ActionPlanVoteUserJoin.query.filter_by(action_plan_id = action_plan_id, voter_id = voter_id).first()
-    if not vote:
-        return 'False'
-    return 'True'
-
 @communities.route('/<int:action_plan_id>/delete_vote_by/<int:voter_id>', methods=['POST'])
 @auth.login_required
 def delete_vote(action_plan_id, voter_id):
