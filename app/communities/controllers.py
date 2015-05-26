@@ -59,12 +59,20 @@ def get_all_issues():
 #    response = {'status':200}
 #    return jsonify(**response)  
 
-
 @communities.route('/issue/delete/<int:issue_id>', methods=['POST'])
 @auth.login_required
 def delete_issue(issue_id):
     issue = Issue.query.filter_by(id=issue_id)
     db.session.delete(issue)
+    db.session.commit()
+    response = {'status':200}
+    return jsonify(**response)
+
+@communities.route('/actionplan/delete/<int:action_plan_id>', methods=['POST'])
+@auth.login_required
+def delete_action_plan(action_plan_id):
+    action_plan = ActionPlan.query.filter_by(id=action_plan_id).first()
+    db.session.delete(action_plan)
     db.session.commit()
     response = {'status':200}
     return jsonify(**response)
