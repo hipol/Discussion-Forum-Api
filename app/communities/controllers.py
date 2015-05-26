@@ -79,8 +79,7 @@ def get_specific_issues(issue_id):
 def create_action_plans(issue_id):
     plan = request.json.get('plan')
     article = request.json.get('article')
-    author_id = g.user.id
-
+    author_id = request.json.get('userid')
 
     if plan is None or article is None:
         abort(400) # missing arguments
@@ -280,7 +279,7 @@ def get_events():
 def create_issue():
     title = request.json.get('title')
     info = request.json.get('article')
-    author_id = g.user.id
+    author_id = request.json.get('userid')
     picture = request.json.get('picture')
 
     if title is None or info is None or picture is None:
