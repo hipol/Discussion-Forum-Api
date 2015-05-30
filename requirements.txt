@@ -17,6 +17,7 @@ bcdoc==0.13.0
 boto==2.37.0
 botocore==0.101.0
 cement==2.4.0
+cloudinary==1.1.1
 colorama==0.3.3
 docutils==0.12
 gunicorn==19.3.0

@@ -132,7 +132,7 @@ def vote_action_plan(action_plan_id):
     ap = ActionPlan.query.filter_by(id = action_plan_id).first()
     ap.votes += 1
 
-    event = Event(4, author_id)
+    event = Event(4, voter_id)
     event.actionplanvoteuserjoins_id  = vote.id 
     db.session.add(event)
 
@@ -204,7 +204,7 @@ def upvote_comment(action_plan_id, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     comment.upvotes += 1
 
-    event = Event(5, author_id)
+    event = Event(5, voter_id)
     event.commentvoteuserjoins_id = vote.id 
     db.session.add(event)
 
@@ -245,7 +245,7 @@ def downvote_comment(action_plan_id, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     comment.downvotes += 1
 
-    event = Event(5, author_id)
+    event = Event(5, voter_id)
     event.commentvoteuserjoins_id = vote.id 
     db.session.add(event)
 
